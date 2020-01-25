@@ -1,0 +1,14 @@
+{
+	"name": "Deep Kitten",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "dev",
+	"workspaceFolder": "/workspace",
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"postCreateCommand": "flutter packages get",
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"dart-code.flutter"
+	]
+}
