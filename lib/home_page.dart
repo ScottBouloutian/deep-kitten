@@ -1,21 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart';
+import 'package:image/image.dart' as Images;
 import 'dart:io';
 
 class HomePage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  File _image;
+class HomePageState extends State<HomePage> {
+  File image;
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
-
+    final selectedImage = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
-      _image = image;
+      image = selectedImage;
     });
+    await analyzeImage(selectedImage);
+  }
+
+  Future<Response> analyzeImage(File file) async {
+    final data = await file.readAsBytes();
+    final image = Images.decodeImage(data);
+    final resizedImage = Images.copyResize(image, width: 256);
+    final resizedImageData = Images.encodeJpg(resizedImage);
+    FormData formData = new FormData.fromMap({
+      "file": MultipartFile.fromBytes(resizedImageData),
+    });
+    try {
+      final response = await Dio().post("https://tfkpb80bza.execute-api.us-east-1.amazonaws.com/dev/inference", data: formData);
+      print(response);
+      return response;
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -25,9 +44,11 @@ class _HomePageState extends State<HomePage> {
         title: Text('Deep Kitten'),
       ),
       body: Center(
-        child: _image == null
+        child: Card(
+          child: image == null
             ? Text('No image selected.')
-            : Image.file(_image),
+            : Image.file(image)
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
