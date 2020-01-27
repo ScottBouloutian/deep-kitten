@@ -1,10 +1,11 @@
 language: dart
+services:
+    - docker
 before_install:
-    - curl -o $TRAVIS_HOME/flutter_linux_v1.9.1+hotfix.6-stable.tar.xz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_v1.9.1+hotfix.6-stable.tar.xz
-    - tar -xf $TRAVIS_HOME/flutter_linux_v1.9.1+hotfix.6-stable.tar.xz -C $TRAVIS_HOME
-    - export PATH=$PATH:$TRAVIS_HOME/flutter/bin
+    - docker pull cirrusci/flutter
+    - docker run -d --name flutter --mount src="$(pwd)",target=/workspace,type=bind cirrusci/flutter /bin/sh -c "sleep infinity"
 install:
-    - flutter packages get
+    - docker exec -it flutter /bin/sh -c "cd /workspace && flutter packages get"
 script:
-    - flutter analyze
-    - flutter test
+    - docker exec -it flutter /bin/sh -c "cd /workspace && flutter analyze"
+    - docker exec -it flutter /bin/sh -c "cd /workspace && flutter test"

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
-import 'package:image/image.dart' as Images;
+import 'package:image/image.dart' as image;
 import 'package:video_player/video_player.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -30,22 +30,22 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  Images.Image createColorCodedImage(Images.Image dataImage) {
-    final result = Images.Image.from(dataImage);
+  image.Image createColorCodedImage(image.Image dataImage) {
+    final result = image.Image.from(dataImage);
     for (int y = 0; y < result.height; y++) {
       for (int x = 0; x < result.width; x++) {
         final color = result.getPixel(x, y);
-        final red = Images.getRed(color);
+        final red = image.getRed(color);
         var resultColor;
         switch (red) {
           case 1:
-            resultColor = Images.setRed(color, 255);
+            resultColor = image.setRed(color, 255);
             break;
           case 2:
-            resultColor = Images.setGreen(color, 255);
+            resultColor = image.setGreen(color, 255);
             break;
           case 3:
-            resultColor = Images.setBlue(color, 255);
+            resultColor = image.setBlue(color, 255);
             break;
           default:
             resultColor = color;
@@ -56,23 +56,23 @@ class HomePageState extends State<HomePage> {
     return result;
   }
 
-  Images.Image createOverlayImage(Images.Image baseImage, Images.Image dataImage) {
-    final result = Images.Image.from(baseImage);
+  image.Image createOverlayImage(image.Image baseImage, image.Image dataImage) {
+    final result = image.Image.from(baseImage);
     for (int y = 0; y < result.height; y++) {
       for (int x = 0; x < result.width; x++) {
         final baseColor = baseImage.getPixel(x, y);
         final dataColor = dataImage.getPixel(x, y);
-        final red = Images.getRed(dataColor);
+        final red = image.getRed(dataColor);
         var resultColor;
         switch (red) {
           case 1:
-            resultColor = Images.setRed(baseColor, 255);
+            resultColor = image.setRed(baseColor, 255);
             break;
           case 2:
-            resultColor = Images.setGreen(baseColor, 255);
+            resultColor = image.setGreen(baseColor, 255);
             break;
           case 3:
-            resultColor = Images.setBlue(baseColor, 255);
+            resultColor = image.setBlue(baseColor, 255);
             break;
           default:
             resultColor = baseColor;
@@ -91,32 +91,32 @@ class HomePageState extends State<HomePage> {
     });
     final selectedImage = await ImagePicker.pickImage(source: ImageSource.camera);
     final resizedImage = await resizeImage(selectedImage);
-    final resizedJpg = Images.encodeJpg(resizedImage);
+    final resizedJpg = image.encodeJpg(resizedImage);
     setState(() {
       inputImage = resizedJpg;
     });
-    final response = await analyzeImage(resizedJpg);;
+    final response = await analyzeImage(resizedJpg);
     final output = base64Decode(response.data);
-    final dataImage = Images.decodePng(output);
+    final dataImage = image.decodePng(output);
     final colorCodedImage = createColorCodedImage(dataImage);
-    final colorizedImage = Images.encodeJpg(colorCodedImage);
+    final colorizedImage = image.encodeJpg(colorCodedImage);
     setState(() {
       outputImage = colorizedImage;
     });
     final averageImage = createOverlayImage(resizedImage, dataImage);
     setState(() {
-      overlayImage = Images.encodeJpg(averageImage);
+      overlayImage = image.encodeJpg(averageImage);
     });
   }
 
-  Future<Images.Image> resizeImage(File file) async {
+  Future<image.Image> resizeImage(File file) async {
     final data = await file.readAsBytes();
-    final image = Images.decodeImage(data);
-    return Images.copyResize(image, width: 512);
+    final decodedImage = image.decodeImage(data);
+    return image.copyResize(decodedImage, width: 512);
   }
 
   Future<Response> analyzeImage(Uint8List image) async {
-    FormData formData = new FormData.fromMap({
+    FormData formData = FormData.fromMap({
       'file': MultipartFile.fromBytes(image),
     });
     return await Dio().post(
