@@ -12,6 +12,7 @@ dependencies:
   image_picker: ^0.6.3
   dio: ^3.0.8
   image: 2.1.4
+  video_player: ^0.10.5
 
 dev_dependencies:
   flutter_test:
