@@ -4,7 +4,7 @@ services:
 before_install:
     - docker pull cirrusci/flutter
     - docker run -d --name flutter --mount src="$(pwd)",target=/workspace,type=bind cirrusci/flutter /bin/sh -c "sleep infinity"
-    - docker exec -it flutter /bin/sh -c "chown -R /workspace"
+    - docker exec -it flutter /bin/sh -c "chown -R cirrus /workspace"
 install:
     - docker exec -it flutter /bin/sh -c "cd /workspace && flutter packages get"
 script:
