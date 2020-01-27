@@ -153,7 +153,7 @@ class HomePageState extends State<HomePage> {
       body: ListView(
         children: [
           inputImage == null
-            ? Text('instructions')
+            ? Container()
             : Image.memory(inputImage),
           buildOutputImage(),
           overlayImage == null

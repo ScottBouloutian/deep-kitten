@@ -1,0 +1,10 @@
+language: dart
+before_install:
+    - curl -o $TRAVIS_HOME/flutter_linux_v1.9.1+hotfix.6-stable.tar.xz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_v1.9.1+hotfix.6-stable.tar.xz
+    - tar -xf $TRAVIS_HOME/flutter_linux_v1.9.1+hotfix.6-stable.tar.xz -C $TRAVIS_HOME
+    - export PATH=$PATH:$TRAVIS_HOME/flutter/bin
+install:
+    - flutter packages get
+script:
+    - flutter analyze
+    - flutter test
