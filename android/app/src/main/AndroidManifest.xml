@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="deep_kitten"
+        android:label="Deep Kitten"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
