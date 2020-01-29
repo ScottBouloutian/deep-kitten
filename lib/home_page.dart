@@ -23,7 +23,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    controller = VideoPlayerController.asset('assets/loading-cat.mp4');
+    controller = VideoPlayerController.asset('assets/videos/loading-cat.mp4');
     controller.setLooping(true);
     initializeVideo = controller.initialize().then((_) {
       controller.play();

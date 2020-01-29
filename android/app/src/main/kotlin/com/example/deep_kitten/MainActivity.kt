@@ -1,4 +1,4 @@
-package com.example.deep_kitten
+package com.scottbouloutian.deep_kitten
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
