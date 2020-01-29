@@ -1,6 +1,6 @@
 name: deep_kitten
 description: A new Flutter project.
-version: 1.0.1+3
+version: 1.0.1+5
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
